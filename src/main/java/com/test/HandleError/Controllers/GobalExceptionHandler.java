@@ -3,6 +3,7 @@ package com.test.HandleError.Controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +29,13 @@ public class GobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", ex.getReason());
+        return ResponseEntity.status(ex.getStatusCode()).body(errors);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleResponseStatusException(DataIntegrityViolationException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", ex.getReason());
         return ResponseEntity.status(ex.getStatusCode()).body(errors);

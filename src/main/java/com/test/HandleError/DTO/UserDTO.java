@@ -3,16 +3,20 @@ package com.test.HandleError.DTO;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserDTO {
-    
+
     @NotBlank(message = "Username is required")
     private String username;
-    
+
     @NotBlank(message = "Email is required")
     private String email;
 
-    public UserDTO(String email, String username) {
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    public UserDTO(String email, String username, String password) {
         this.email = email;
         this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -29,5 +33,13 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

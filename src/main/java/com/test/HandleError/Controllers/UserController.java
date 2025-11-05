@@ -2,7 +2,6 @@ package com.test.HandleError.Controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +21,16 @@ import jakarta.validation.Valid;
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/users")
     public List<UserDTO> getUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDTO(user.getUsername(), user.getEmail()))
+                .map(user -> new UserDTO(user.getUsername(), user.getEmail(), user.getPassword()))
                 .toList();
     }
 
@@ -37,6 +39,7 @@ public class UserController {
         UserEntity user = new UserEntity();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getEmail());
         userRepository.save(user);
         return "User created successfully";
     }
@@ -47,7 +50,7 @@ public class UserController {
                 .map(user -> new UserSearchRequestDTO(user.getUsername(), user.getEmail()))
                 .orElse(null);
 
-        if(searchUser == null){
+        if (searchUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return searchUser;
