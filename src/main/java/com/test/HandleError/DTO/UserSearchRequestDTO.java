@@ -2,17 +2,14 @@ package com.test.HandleError.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class UserDTO {
-    
-    @NotBlank(message = "Username is required")
+public class UserSearchRequestDTO {
     private String username;
-    
     @NotBlank(message = "Email is required")
     private String email;
 
-    public UserDTO(String email, String username) {
-        this.email = email;
+    public UserSearchRequestDTO(String username, String email) {
         this.username = username;
+        this.email = email;
     }
 
     public String getUsername() {

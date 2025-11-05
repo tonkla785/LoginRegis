@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.test.HandleError.DTO.UserDTO;
+import com.test.HandleError.DTO.UserSearchRequestDTO;
 import com.test.HandleError.Entity.UserEntity;
 import com.test.HandleError.Repository.UserRepository;
 
@@ -41,9 +42,9 @@ public class UserController {
     }
 
     @GetMapping("/user-by-email")
-    public UserDTO getUserByEmail(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO searchUser = userRepository.findByEmail(userDTO.getEmail())
-                .map(user -> new UserDTO(user.getUsername(), user.getEmail()))
+    public UserSearchRequestDTO getUserByEmail(@Valid @RequestBody UserSearchRequestDTO userSearchRequestDTO) {
+        UserSearchRequestDTO searchUser = userRepository.findByEmail(userSearchRequestDTO.getEmail())
+                .map(user -> new UserSearchRequestDTO(user.getUsername(), user.getEmail()))
                 .orElse(null);
 
         if(searchUser == null){
