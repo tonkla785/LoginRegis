@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HandleErrorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HandleErrorApplication.class, args);
+		SpringApplication.run(HandleErrorApplication.class, args);	
 	}
 
 }
