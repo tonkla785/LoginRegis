@@ -1,6 +1,7 @@
 package com.test.HandleError.Controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +19,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -33,14 +37,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         UserEntity user = new UserEntity();
         user.setUsername(registerRequestDTO.getName());
         user.setEmail(registerRequestDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
-        userRepository.save(user);
-        // System.out.println(e.gelClass()); Check class Errors
-        return "Register Successful";
+
+        UserEntity savedUser = userRepository.save(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Register Successful");
+        response.put("userId", savedUser.getId()); // เพิ่มข้อมูลอื่นได้ตามต้องการ
+        response.put("username", savedUser.getUsername());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
